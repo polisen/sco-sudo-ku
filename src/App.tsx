@@ -1,62 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
+import styled from 'styled-components';
+import Board from './features/Board';
 import { rrfProps } from './app/store';
+
+const board = [
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+];
+
+const MainLayout = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; height: 100vh;
+`;
 
 function App() {
   console.debug(rrfProps);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,
-          <span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <MainLayout>
+      <Board board={board} onClick={(obj: any) => console.debug(obj)} />
+    </MainLayout>
   );
 }
 

@@ -6,6 +6,12 @@ import 'firebase/compat/functions';
 
 // Your web app's Firebase configuration
 const fbConfig = {
+  apiKey: 'AIzaSyALlD_4cqvwqB-gpAoz4IPJh3VUUM8y0xk',
+  authDomain: 'megatech-ltd.firebaseapp.com',
+  projectId: 'megatech-ltd',
+  storageBucket: 'megatech-ltd.appspot.com',
+  messagingSenderId: '825773504495',
+  appId: '1:825773504495:web:181e3c76132798e74ca81a',
 };
 
 // Initialize Firebase
@@ -16,7 +22,9 @@ try {
   firebase.firestore();
   firebase.storage();
   if (window.location.hostname === 'localhost') {
-    console.debug('testing locally -- hitting local functions and firestore emulators');
+    console.debug(
+      'testing locally -- hitting local functions and firestore emulators',
+    );
     firebase.functions().useEmulator('localhost', 5001);
     firebase.auth().useEmulator('http://localhost:9099');
     firebase.storage().useEmulator('localhost', 9199);
