@@ -1,21 +1,10 @@
-import React from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 
 import './App.css';
 import styled from 'styled-components';
 import Board from './features/Board';
 import generate, { whichQuadrant } from './BoardGenerator';
-
-const board = [
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  [1, 2, 3, 4, 5, 6, 7, 8, 4],
-];
 
 const MainLayout = styled.div`
   display: flex;
@@ -26,7 +15,8 @@ const MainLayout = styled.div`
 `;
 
 function App() {
-  generate(board);
+  const [board] = useState(generate());
+
   return (
     <MainLayout>
       <Board
