@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import './App.css';
 import styled from 'styled-components';
 import Board from './features/Board';
-import generate, { whichQuadrant } from './BoardGenerator';
+import generate from './BoardGenerator';
+import { whichQuadrant } from './sudokuSolver';
 
 const MainLayout = styled.div`
   display: flex;
@@ -15,7 +16,11 @@ const MainLayout = styled.div`
 `;
 
 function App() {
-  const [board] = useState(generate());
+  const [board, setBoard] = useState([[2]]);
+
+  useEffect(() => {
+    setBoard(generate());
+  }, []);
 
   return (
     <MainLayout>

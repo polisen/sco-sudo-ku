@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-type Board = number[][];
+import solve from './sudokuSolver';
 
-const reduceNumber = (n: number) => Math.floor(n / 3) + 1;
+type Board = number[][];
 
 /**
  * Fisher Yates Shuffle Algorithm
@@ -29,12 +29,9 @@ function shuffle(array: number[]) {
   return array;
 }
 
-/**
- * Takes coordinates and figures out which quadrant the number belongs to.
- * @param array - x,y coordinates
- * @returns which quadrant it is - counted vertically.
- */
-export function whichQuadrant([x, y]: [number, number]): number {
+const reduceNumber = (n: number) => Math.floor(n / 3) + 1;
+
+function whichQuadrant([x, y]: [number, number]): number {
   const rx = reduceNumber(x);
   switch (reduceNumber(y)) {
     case 1:
@@ -55,28 +52,6 @@ export function whichQuadrant([x, y]: [number, number]): number {
 
   return 0;
 }
-
-/**
- * This function takes the board and returns a 2d array of each quadrants numbers.
- * @param board {Board} - the current board - in whichever state.
- * @returns board
- */
-
-// function getQuadrants(board: Board): Board {
-//   let quads: number[][] = [];
-//   board.forEach((col, index) => {
-//     col.forEach((el, idx) => {
-//       if (el && el >= 0 && el <= 9) {
-//         const quadIDX = whichQuadrant([index, idx]);
-//         if (!quads[quadIDX]) quads[quadIDX] = [];
-//         quads[quadIDX].push(el);
-//       }
-//     });
-//   });
-//   quads = quads.map((arr: number[]) => [...new Set(arr)]);
-//   //   console.debug({ quads });
-//   return quads;
-// }
 
 // generate a board with quadrant 1, 5, 9 completely
 // randomly as there is no direct relationship between them.
@@ -120,6 +95,21 @@ function generateBoardSeed(): Board {
 
 function generate(): Board {
   const board = generateBoardSeed();
+  //   const board = [
+  //     [0, 5, 1, 3, 6, 2, 7, 0, 0],
+  //     [0, 4, 0, 0, 5, 8, 0, 0, 0],
+  //     [0, 0, 0, 4, 0, 0, 0, 2, 5],
+  //     [0, 8, 0, 0, 0, 0, 9, 0, 3],
+  //     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  //     [7, 0, 5, 0, 0, 0, 0, 8, 0],
+  //     [1, 2, 0, 0, 0, 9, 0, 0, 0],
+  //     [0, 0, 0, 2, 8, 0, 0, 6, 0],
+  //     [0, 0, 8, 5, 3, 4, 2, 9, 0],
+  //   ];
+
+  const solved = solve(board);
+
+  console.debug(solved);
   return board;
 }
 
