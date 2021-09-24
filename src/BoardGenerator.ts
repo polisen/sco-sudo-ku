@@ -125,21 +125,25 @@ const checkSameness = function checkBoardSameness(b1: Board, b2: Board): boolean
 
 function checkUniqueness(originalBoard: Board, mutatingBoard: Board) {
   const [x, y] = getRandomTuple();
-  const workingBoard = deepClone(mutatingBoard);
+  // create clone of array
+  // const workingBoard = deepClone(mutatingBoard);
 
-  workingBoard[x][y] = 0;
-
-  const reversedBoard = deepClone(workingBoard).reverse();
+  mutatingBoard[x][y] = 0;
+  // clone and reverse it.
+  const reversedBoard = deepClone(mutatingBoard).reverse();
+  // solve it
   const reversedSolve = solve(reversedBoard);
+  // reverse it back
   const returnedBoard = reversedSolve.reverse();
+  // check if it's the same as the filled original board
   const same = checkSameness(returnedBoard, originalBoard);
-
+  // if it is check call it again with the board
   if (same) {
-    checkUniqueness(originalBoard, workingBoard);
+    checkUniqueness(originalBoard, mutatingBoard);
   } else {
     console.table(mutatingBoard);
   }
-  return returnedBoard;
+  return mutatingBoard;
 }
 
 function generate(): Board {
