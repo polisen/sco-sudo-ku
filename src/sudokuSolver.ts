@@ -96,7 +96,7 @@ function emptySlot(board: number[][]) {
 function solve(board: number[][]): number[][] {
   const [x, y] = emptySlot(board);
 
-  console.debug([x, y]);
+  // console.debug([x, y]);
   if (x === -1) {
     return board;
   }
@@ -107,10 +107,13 @@ function solve(board: number[][]): number[][] {
     }
   }
 
-  if (emptySlot(board)[0] !== -1) board[x][y] = 0;
+  if (emptySlot(board)[0] !== -1) {
+    board[x][y] = 0;
+  }
 
   return board;
 }
+
 // check if the grid is full.
 // if it is - return board.
 // for each number in the grid.

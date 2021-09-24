@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
 import solve from './sudokuSolver';
 
@@ -71,7 +72,7 @@ function getInitialQuadrantInformation(): Board {
       board.push(zeroArray);
     }
   }
-  console.debug(board);
+  // console.debug(board);
   return board;
 }
 
@@ -93,24 +94,62 @@ function generateBoardSeed(): Board {
   return board;
 }
 
+const getRandom = () => Math.floor(Math.random() * 9);
+
+const getRandomTuple = () => [getRandom(), getRandom()];
+
+const deepClone = (matrix: Board) => matrix.map((arr) => [...arr]);
+
+const checkSameness = function checkBoardSameness(b1: Board, b2: Board): boolean {
+  let condition = true;
+  b1.every((col: number[], xIdx) => {
+    col.every((e: number, yIdx) => {
+      if (b1[xIdx][yIdx] !== b2[xIdx][yIdx]) {
+        console.log({
+          xIdx,
+          yIdx,
+          b1,
+          b2,
+          b1val: b1[xIdx][yIdx],
+          b2val: b2[xIdx][yIdx],
+        });
+        condition = false;
+        return condition;
+      }
+      return condition;
+    });
+    return condition;
+  });
+  return condition;
+};
+
+function checkUniqueness(originalBoard: Board, mutatingBoard: Board) {
+  const [x, y] = getRandomTuple();
+  const workingBoard = deepClone(mutatingBoard);
+
+  workingBoard[x][y] = 0;
+
+  const reversedBoard = deepClone(workingBoard).reverse();
+  const reversedSolve = solve(reversedBoard);
+  const returnedBoard = reversedSolve.reverse();
+  const same = checkSameness(returnedBoard, originalBoard);
+
+  if (same) {
+    checkUniqueness(originalBoard, workingBoard);
+  } else {
+    console.table(mutatingBoard);
+  }
+  return returnedBoard;
+}
+
 function generate(): Board {
   const board = generateBoardSeed();
-  //   const board = [
-  //     [0, 5, 1, 3, 6, 2, 7, 0, 0],
-  //     [0, 4, 0, 0, 5, 8, 0, 0, 0],
-  //     [0, 0, 0, 4, 0, 0, 0, 2, 5],
-  //     [0, 8, 0, 0, 0, 0, 9, 0, 3],
-  //     [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  //     [7, 0, 5, 0, 0, 0, 0, 8, 0],
-  //     [1, 2, 0, 0, 0, 9, 0, 0, 0],
-  //     [0, 0, 0, 2, 8, 0, 0, 6, 0],
-  //     [0, 0, 8, 5, 3, 4, 2, 9, 0],
-  //   ];
-
+  // const intint = 0;
   const solved = solve(board);
 
-  console.debug(solved);
-  return board;
+  const uniqueBoard = checkUniqueness(deepClone(solved), deepClone(solved));
+  console.log({ uniqueBoard });
+  return uniqueBoard;
 }
 
 export default generate;
