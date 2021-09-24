@@ -10,20 +10,21 @@ type Board = number[][];
 
 const reduceNumber = (n: number) => Math.floor(n / 3) + 1;
 
+// O(3)
 export function whichQuadrant([x, y]: [number, number]): number {
   const rx = reduceNumber(x);
   switch (reduceNumber(y)) {
     case 1:
-      return rx;
+      return rx - 1;
     case 2:
-      if (rx === 1) return 4;
-      if (rx === 2) return 5;
-      if (rx === 3) return 6;
+      if (rx === 1) return 3;
+      if (rx === 2) return 4;
+      if (rx === 3) return 5;
       break;
     case 3:
-      if (rx === 1) return 7;
-      if (rx === 2) return 8;
-      if (rx === 3) return 9;
+      if (rx === 1) return 6;
+      if (rx === 2) return 7;
+      if (rx === 3) return 8;
       break;
     default:
       break;
@@ -38,6 +39,7 @@ export function whichQuadrant([x, y]: [number, number]): number {
  * @returns board
  */
 
+// O(n*n) - awful
 export function getQuadrants(board: Board): Board {
   let quads: number[][] = [];
   board.forEach((col, index) => {
@@ -52,6 +54,16 @@ export function getQuadrants(board: Board): Board {
   quads = quads.map((arr: number[]) => [...new Set(arr)]);
   return quads;
 }
+
+/**
+ * This function returns whether or not a certain number
+ * in a certain position is a valid sudoku move.
+ * @param board - 2d array
+ * @param col - index number of current column.
+ * @param row - index number of current row.
+ * @param num - number being considered for placement
+ * @returns {boolean} - is the current number a valid choice.
+ */
 
 function validChoice(board: number[][], col: number, row: number, num: number) {
   let indicator = true;
@@ -74,6 +86,12 @@ function validChoice(board: number[][], col: number, row: number, num: number) {
   return indicator;
 }
 
+/**
+ * Returns the coordinates of the next empty slot.
+ * @param board 2d array
+ * @returns {[x,y]} - coordinates of the next empty slot in the board.
+ */
+
 function emptySlot(board: number[][]) {
   let condition = true;
   let x: number = -1;
@@ -93,17 +111,29 @@ function emptySlot(board: number[][]) {
   return [x, y];
 }
 
-function solve(board: number[][]): number[][] {
+/**
+ * Recursively solves a board in any configuration.
+ * Inserts new valid sudoku moves until it cannot find another one.
+ * If the board is full, it's done.
+ * If the board is not filled - it removes the last move and tries the next.
+ * It's a depth first search algorithm.
+ * @param board - 2d array.
+ * @returns {board} - board in it solved state.
+ */
+export function oldSolve(
+  board: number[][],
+  quadrantInfo: number[][],
+): number[][] {
   const [x, y] = emptySlot(board);
+  // const q = whichQuadrant([x, y]);
 
-  console.debug([x, y]);
   if (x === -1) {
     return board;
   }
   for (let num = 1; num <= 9; num += 1) {
     if (validChoice(board, x, y, num)) {
       board[x][y] = num;
-      solve(board);
+      oldSolve(board, quadrantInfo);
     }
   }
 
@@ -111,13 +141,44 @@ function solve(board: number[][]): number[][] {
 
   return board;
 }
+
+export function RecursiveSudokuDFS(
+  board: number[][],
+  quadrantInfo: number[][],
+  newestNumber: number = 0,
+): number[][] {
+  const [x, y] = emptySlot(board);
+  const q = whichQuadrant([x, y]);
+  if (x === -1) {
+    return board;
+  }
+  // for each number available number in the quadrant.
+  // check if
+  const quadrant = quadrantInfo[q];
+
+  quadrant.forEach((num, index) => {
+    if (validChoice(board, x, y, num)) {
+      board[x][y] = num;
+      delete quadrantInfo[q][index];
+
+      RecursiveSudokuDFS(board, quadrantInfo, num);
+      quadrantInfo[q][index] = num;
+    }
+  });
+
+  if (emptySlot(board)[0] !== -1) {
+    if (newestNumber) quadrantInfo[q][newestNumber - 1] = newestNumber;
+    board[x][y] = 0;
+  }
+
+  return board;
+}
 // check if the grid is full.
 // if it is - return board.
-// for each number in the grid.
-// if the number is 0
+// for each empty slot in the grid.
 // for all numbers between 1-9
 // check if the number is a valid choice.
 // if it is - insert it.
 // call the solve algorithm again with the new board
 
-export default solve;
+export default RecursiveSudokuDFS;

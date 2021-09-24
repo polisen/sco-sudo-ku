@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
-import solve from './sudokuSolver';
+import solve, { oldSolve } from './sudokuSolver';
 
 type Board = number[][];
 
@@ -61,22 +62,25 @@ function whichQuadrant([x, y]: [number, number]): number {
 // if there is - add another number.
 // check again.
 
-function getInitialQuadrantInformation(): Board {
+function getInitialQuadrantInformation(): [Board, Board] {
   const board = [];
+  const shadowBoard = [];
   for (let i = 0; i < 9; i += 1) {
     if ([0, 4, 8].includes(i)) {
       board.push(shuffle(Array.from(Array(9), (e, index) => index + 1)));
+      shadowBoard.push([]);
     } else {
       const zeroArray = new Array(9).fill(0);
+      shadowBoard.push(Array.from(Array(9), (e, index) => index + 1));
       board.push(zeroArray);
     }
   }
   console.debug(board);
-  return board;
+  return [board, shadowBoard];
 }
 
-function generateBoardSeed(): Board {
-  const quadrants: Board = getInitialQuadrantInformation();
+function generateBoardSeed(): [Board, Board] {
+  const [quadrants, quadrantInfo]: [Board, Board] = getInitialQuadrantInformation();
   const board: Board = [];
   for (let i = 0; i < 9; i += 1) {
     if (!board[i]) board[i] = [];
@@ -90,11 +94,11 @@ function generateBoardSeed(): Board {
     }
   }
 
-  return board;
+  return [board, quadrantInfo];
 }
 
 function generate(): Board {
-  const board = generateBoardSeed();
+  const [board, quadrantInfo] = generateBoardSeed();
   //   const board = [
   //     [0, 5, 1, 3, 6, 2, 7, 0, 0],
   //     [0, 4, 0, 0, 5, 8, 0, 0, 0],
@@ -106,10 +110,24 @@ function generate(): Board {
   //     [0, 0, 0, 2, 8, 0, 0, 6, 0],
   //     [0, 0, 8, 5, 3, 4, 2, 9, 0],
   //   ];
+  console.time('new');
+  for (let i = 0; i < 100; i += 1) {
+    solve(board, quadrantInfo);
+  }
+  console.debug('###################');
+  console.timeLog('new');
+  console.timeEnd('new');
 
-  const solved = solve(board);
+  console.time('old');
 
-  console.debug(solved);
+  for (let i = 0; i < 100; i += 1) {
+    oldSolve(board, quadrantInfo);
+  }
+  console.debug('###################');
+  console.timeLog('old');
+  console.timeEnd('old');
+
+  // console.debug(solved);
   return board;
 }
 
