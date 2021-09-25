@@ -150,12 +150,6 @@ function findEmptySlots(unique: Board): [number, Board] {
   return [amountEmpty, emptyCoords];
 }
 
-// function findAndPatchEmptySlots(solved: Board, unique: Board) {
-//   const [amountEmpty] = findEmptySlots(unique);
-//   console.debug(amountEmpty);
-//   return amountEmpty;
-// }
-
 const inDifficultyRange = (difficulty: string, n: number) => {
   switch (difficulty) {
     case 'easy':
@@ -182,7 +176,7 @@ function generate(difficulty = 'easy'): Board {
 
   while (!inDifficultyRange(difficulty, emptySlots)) {
     solved = solve(board);
-    unique = checkUniqueness(deepClone(solved), deepClone(solved));
+    unique = checkUniqueness(solved, deepClone(solved));
     ([emptySlots] = findEmptySlots(unique));
   }
 
