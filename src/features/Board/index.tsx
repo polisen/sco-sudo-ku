@@ -29,7 +29,7 @@ const Slot = styled.div<SlotProps>`
 
 interface ColumnProps {
   col: number[];
-  index: number;
+  y: number;
   onClick: Function;
 }
 
@@ -39,11 +39,24 @@ const ColumnLayout = styled.div<{ index: number }>`
   border-right: ${({ index }) => getBorderStyle(index)};
 `;
 
-const Column = ({ col, index, onClick }: ColumnProps) => (
-  <ColumnLayout index={index}>
-    {col.map((e: number, i: number) => (
-      <Slot index={i} onClick={() => onClick({ row: i })}>
-        {e}
+const NumberInput = styled.input<{ index: number }>`
+
+width: 100%;
+height: 100%;
+text-align: center; 
+border: none;
+border-bottom: ${({ index }) => getBorderStyle(index)};
+:focus {
+  background-color: beige;
+  border: none;
+}
+
+`;
+const Column = ({ col, y, onClick }: ColumnProps) => (
+  <ColumnLayout index={y}>
+    {col.map((e: number, x: number) => (
+      <Slot index={x} onClick={() => onClick({ row: x })}>
+        {e !== 0 ? e : <NumberInput index={x} />}
       </Slot>
     ))}
   </ColumnLayout>
@@ -61,8 +74,8 @@ const BoardLayout = styled.div`
 
 const Board = ({ board, onClick }: BoardProps) => (
   <BoardLayout>
-    {board.map((col, index) => (
-      <Column {...{ col, index, onClick: (obj: object) => onClick({ ...obj, column: index }) }} />
+    {board.map((col, y) => (
+      <Column {...{ col, y, onClick: (obj: object) => onClick({ ...obj, column: y }) }} />
     ))}
   </BoardLayout>
 );

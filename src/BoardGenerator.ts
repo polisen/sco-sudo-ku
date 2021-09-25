@@ -3,6 +3,7 @@
 import solve from './sudokuSolver';
 
 type Board = number[][];
+type Column = number[];
 
 /**
  * Fisher Yates Shuffle Algorithm
@@ -100,19 +101,14 @@ const getRandomTuple = () => [getRandom(), getRandom()];
 
 const deepClone = (matrix: Board) => matrix.map((arr) => [...arr]);
 
-const checkSameness = function checkBoardSameness(b1: Board, b2: Board): boolean {
+const checkSameness = function checkBoardSameness(
+  b1: Board,
+  b2: Board,
+): boolean {
   let condition = true;
   b1.every((col: number[], xIdx) => {
     col.every((e: number, yIdx) => {
       if (b1[xIdx][yIdx] !== b2[xIdx][yIdx]) {
-        console.log({
-          xIdx,
-          yIdx,
-          b1,
-          b2,
-          b1val: b1[xIdx][yIdx],
-          b2val: b2[xIdx][yIdx],
-        });
         condition = false;
         return condition;
       }
@@ -125,35 +121,72 @@ const checkSameness = function checkBoardSameness(b1: Board, b2: Board): boolean
 
 function checkUniqueness(originalBoard: Board, mutatingBoard: Board) {
   const [x, y] = getRandomTuple();
-  // create clone of array
-  // const workingBoard = deepClone(mutatingBoard);
 
   mutatingBoard[x][y] = 0;
-  // clone and reverse it.
   const reversedBoard = deepClone(mutatingBoard).reverse();
-  // solve it
   const reversedSolve = solve(reversedBoard);
-  // reverse it back
   const returnedBoard = reversedSolve.reverse();
-  // check if it's the same as the filled original board
   const same = checkSameness(returnedBoard, originalBoard);
-  // if it is check call it again with the board
   if (same) {
     checkUniqueness(originalBoard, mutatingBoard);
   } else {
-    console.table(mutatingBoard);
+    // console.table(mutatingBoard);
   }
   return mutatingBoard;
 }
 
-function generate(): Board {
-  const board = generateBoardSeed();
-  // const intint = 0;
-  const solved = solve(board);
+function findEmptySlots(unique: Board): [number, Board] {
+  const emptyCoords: [number, number][] = [];
+  let amountEmpty = 0;
+  unique.forEach((column: Column, x) => {
+    column.forEach((element, y) => {
+      if (!element) {
+        emptyCoords.push([x, y]);
+        amountEmpty += 1;
+      }
+    });
+  });
 
-  const uniqueBoard = checkUniqueness(deepClone(solved), deepClone(solved));
-  console.log({ uniqueBoard });
-  return uniqueBoard;
+  return [amountEmpty, emptyCoords];
+}
+
+// function findAndPatchEmptySlots(solved: Board, unique: Board) {
+//   const [amountEmpty] = findEmptySlots(unique);
+//   console.debug(amountEmpty);
+//   return amountEmpty;
+// }
+
+const inDifficultyRange = (difficulty: string, n: number) => {
+  switch (difficulty) {
+    case 'easy':
+      if (n >= 28 && n < 37) return true;
+      break;
+    case 'medium':
+      if (n >= 37 && n < 45) return true;
+      break;
+    case 'hard':
+      if (n > 45) return true;
+      break;
+    default:
+      return false;
+  }
+  return false;
+};
+
+function generate(difficulty = 'easy'): Board {
+  const board = generateBoardSeed();
+
+  let emptySlots = 0;
+  let solved: Board = [];
+  let unique: Board = [];
+
+  while (!inDifficultyRange(difficulty, emptySlots)) {
+    solved = solve(board);
+    unique = checkUniqueness(deepClone(solved), deepClone(solved));
+    ([emptySlots] = findEmptySlots(unique));
+  }
+
+  return unique;
 }
 
 export default generate;
