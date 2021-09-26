@@ -1,5 +1,6 @@
 src/app/store.ts
 src/slices
+functions/*
 *Slice*
 test-utility.jsx
 .eslintrc.js

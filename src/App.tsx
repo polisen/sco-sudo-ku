@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-
 import './App.css';
 import styled from 'styled-components';
+import useSudoku from './hooks/useSudoku';
 import Board from './features/Board';
-import generate from './BoardGenerator';
 import { whichQuadrant } from './sudokuSolver';
 
 const MainLayout = styled.div`
@@ -24,31 +22,24 @@ const Button = styled.button`
   :hover {
     background-color: #4040ff;
   }
-
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   margin: 10em;
   margin: 10em;
-
 `;
 
 const Difficulty = ({ onClick }: { onClick: Function }) => (
   <ButtonContainer>
-    {['easy', 'medium', 'hard'].map((d: string) => <Button onClick={() => onClick(d)}>{d}</Button>)}
+    {['easy', 'medium', 'hard'].map((d: string) => (
+      <Button onClick={() => onClick(d)}>{d}</Button>
+    ))}
   </ButtonContainer>
 );
 
 function App() {
-  const [board, setBoard] = useState([[2]]);
-  const [difficulty, setDifficulty] = useState('easy');
-
-  useEffect(() => {
-    console.debug(difficulty);
-    setBoard(generate(difficulty));
-  }, [difficulty]);
-
+  const { board, getSolution, setDifficulty } = useSudoku();
   return (
     <MainLayout>
       <Board
@@ -56,6 +47,9 @@ function App() {
         onClick={({ row, column }: any) => console.debug(whichQuadrant([column, row]))}
       />
       <Difficulty onClick={(d: string) => setDifficulty(d)} />
+      <button type="button" onClick={() => getSolution()}>
+        Solve
+      </button>
     </MainLayout>
   );
 }

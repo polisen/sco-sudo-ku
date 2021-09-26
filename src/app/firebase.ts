@@ -6,12 +6,12 @@ import 'firebase/compat/functions';
 
 // Your web app's Firebase configuration
 const fbConfig = {
-  apiKey: 'AIzaSyALlD_4cqvwqB-gpAoz4IPJh3VUUM8y0xk',
-  authDomain: 'megatech-ltd.firebaseapp.com',
-  projectId: 'megatech-ltd',
-  storageBucket: 'megatech-ltd.appspot.com',
-  messagingSenderId: '825773504495',
-  appId: '1:825773504495:web:181e3c76132798e74ca81a',
+  apiKey: 'AIzaSyC785UHjpXIY4sbdxVJpfyEQ_NTbLOynL4',
+  authDomain: 'jobsearch-scraper.firebaseapp.com',
+  projectId: 'jobsearch-scraper',
+  storageBucket: 'jobsearch-scraper.appspot.com',
+  messagingSenderId: '548115443370',
+  appId: '1:548115443370:web:a85f3e13aeca90f1886ad3',
 };
 
 // Initialize Firebase
