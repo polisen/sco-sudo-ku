@@ -5,10 +5,11 @@ const {
   generateBoardSeed,
   inDifficultyRange,
   solve,
-  checkUniqueness,
+  generateUnique,
   deepClone,
-  findEmptySlots,
-} = require("./utility");
+  findEmpties,
+} = require("./board-operations");
+
 
 exports.getBoard = functions.https.onCall(async (data, context) => {
   let difficulty = data.difficulty;
@@ -16,13 +17,13 @@ exports.getBoard = functions.https.onCall(async (data, context) => {
   let emptySlots = 0;
   let solved = [];
   let unique = [];
+  let emptyCoords = [];
 
   while (!inDifficultyRange(difficulty, emptySlots)) {
     solved = solve(board);
-    unique = checkUniqueness(deepClone(solved), deepClone(solved));
-    [emptySlots] = findEmptySlots(unique);
+    unique = generateUnique(deepClone(solved), deepClone(solved));
+    [emptySlots, emptyCoords] = findEmpties(unique);
   }
-
-  return {board: unique, solution: solved};
+  return {board: unique, solution: solved, empty: emptyCoords};
 });
 

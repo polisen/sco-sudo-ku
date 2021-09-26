@@ -18,6 +18,8 @@ export default function useSudoku() {
   const getBoard = firebase.functions().httpsCallable('getBoard');
 
   useEffect(() => {
+    setLoading(true);
+    setSolved(false);
     getBoard({ difficulty }).then((result: any) => {
       setBoard(result.data.board);
       setSolution(result.data.solution);
@@ -38,32 +40,31 @@ export default function useSudoku() {
    */
   function handleValidity({ x, y, v }: Validity) {
     const val = Number(v.replace('0', ''));
-    if (val < 10 || val === 0) {
+    if ((val < 10 || val === 0) && solution[x][y] === val && empty[x][y]) {
       const newBoard = [...board];
       newBoard[x][y] = val;
       setBoard(newBoard);
-      if (solution[x][y] === val && empty[x][y]) {
-        setEmpty(() => {
-          const e = [...empty];
-          delete e[x][y];
-          return e;
-        });
-      }
+      setEmpty(() => {
+        const e = [...empty];
+        delete e[x][y];
+        return e;
+      });
     }
   }
 
-  function solve(){
-    setBoard(solution)
-    setSolved(true)
+  function solve() {
+    setBoard(solution);
+    setSolved(true);
   }
-
 
   return {
     board,
+    solved,
     empty,
     solve,
+    difficulty,
     loading,
-    getSolution: () => ,
+    getSolution: () => solve(),
     setDifficulty: (d: string) => setDifficulty(d),
     checkValidity: handleValidity,
   };

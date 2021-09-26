@@ -3,53 +3,44 @@ import './App.css';
 import styled from 'styled-components';
 import useSudoku from './hooks/useSudoku';
 import Board from './features/Board';
-import { whichQuadrant } from './sudokuSolver';
+import { Spinner } from './components/Spinner';
+import Difficulty, { Button } from './components/DifficultyButtons';
 
-const MainLayout = styled.div`
+const MainLayout = styled.div<{ solved: boolean }>`
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
+  background-color: ${({ solved }) => solved && '#e5e7ab'};
 `;
-
-const Button = styled.button`
-  margin: 1em;
-  padding: 1em 3em 1em 3em;
-  border: 0;
-  border-radius: 8px;
-  :hover {
-    background-color: #4040ff;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  margin: 10em;
-  margin: 10em;
-`;
-
-const Difficulty = ({ onClick }: { onClick: Function }) => (
-  <ButtonContainer>
-    {['easy', 'medium', 'hard'].map((d: string) => (
-      <Button onClick={() => onClick(d)}>{d}</Button>
-    ))}
-  </ButtonContainer>
-);
 
 function App() {
-  const { board, getSolution, setDifficulty } = useSudoku();
+  const {
+    board,
+    loading,
+    solved,
+    difficulty,
+    empty,
+    getSolution,
+    setDifficulty,
+    checkValidity,
+  } = useSudoku();
+
   return (
-    <MainLayout>
-      <Board
-        board={board}
-        onClick={({ row, column }: any) => console.debug(whichQuadrant([column, row]))}
+    <MainLayout solved={solved}>
+      {loading ? <Spinner /> : (
+        <Board board={board} empty={empty} onChange={checkValidity} />
+      )}
+
+      <Difficulty
+        onClick={(d: string) => setDifficulty(d)}
+        difficulty={difficulty}
       />
-      <Difficulty onClick={(d: string) => setDifficulty(d)} />
-      <button type="button" onClick={() => getSolution()}>
+      <Button selected={false} type="button" onClick={() => getSolution()}>
         Solve
-      </button>
+      </Button>
     </MainLayout>
   );
 }
