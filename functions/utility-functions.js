@@ -37,6 +37,19 @@ function shuffleArray(array) {
   return array;
 }
 
+/**
+ * Creates a representation of each number that should go in the initial board - split up by quadrant.
+ * As mentioned elsewhere - the quadrants on one diagonal axis have nothing to do with each other
+ * so you can fill them randomly and cut down on the recursive generation time.
+ * 
+ * [0][ ][ ]
+ * [ ][4][ ]
+ * [ ][ ][8]
+ * 
+ * @returns board filled diagonally.
+ * 
+ */
+
 function getInitialQuadrantInformation() {
     const board = [];
     for (let i = 0; i < 9; i += 1) {

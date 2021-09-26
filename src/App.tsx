@@ -13,7 +13,7 @@ const MainLayout = styled.div<{ solved: boolean }>`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: ${({ solved }) => solved && '#e5e7ab'};
+  background-color: ${({ solved }) => solved && '#75DDDD'};
 `;
 
 function App() {
@@ -30,10 +30,14 @@ function App() {
 
   return (
     <MainLayout solved={solved}>
-      {loading ? <Spinner /> : (
+      {!loading && !solved ? 'TIP: The number is only inserted if its right.' : 'Solved'}
+      <br />
+      <br />
+      {loading ? (
+        <Spinner />
+      ) : (
         <Board board={board} empty={empty} onChange={checkValidity} />
       )}
-
       <Difficulty
         onClick={(d: string) => setDifficulty(d)}
         difficulty={difficulty}

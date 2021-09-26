@@ -9,8 +9,8 @@ const BoardLayout = styled.div`
   overflow: hidden;
   /* border-radius: 8px; */
 background: #ffffff;
-box-shadow:  11px 11px 22px #f0f0f0,
-             -11px -11px 22px #ffffff;
+box-shadow:  11px 11px 22px #16521b13,
+             -11px -11px 22px #154d1a13;
 `;
 
 interface BoardProps {

@@ -1,5 +1,16 @@
+// take a guess
 const reduceNumber = (n) => Math.floor(n / 3) + 1;
 
+/**
+ * Takes any 9x9 position and shoves it into a
+ * 3x3 position, i.e the quadrants.
+ *
+ * Looks ugly but sort of performant.
+ *
+ * This can probably be done waaaaaay better.
+ * @param {[number,number]} coordinates
+ * @returns which quadrant.
+ */
 function whichQuadrant([x, y]) {
   const rx = reduceNumber(x);
   switch (reduceNumber(y)) {
@@ -22,6 +33,13 @@ function whichQuadrant([x, y]) {
   return 0;
 }
 
+/**
+ * Check if the two boards are the same.
+ * @param {number[][]} b1 - board
+ * @param {number[][]} b2 . board
+ * @returns boolean
+ */
+
 const checkSameness = function checkBoardSameness(b1, b2) {
   let condition = true;
   b1.every((col, xIdx) => {
@@ -43,7 +61,7 @@ const checkSameness = function checkBoardSameness(b1, b2) {
  * @returns board
  */
 
- function getQuadrants(board) {
+function getQuadrants(board) {
   let quads = [];
   board.forEach((col, index) => {
     col.forEach((el, idx) => {
@@ -58,32 +76,42 @@ const checkSameness = function checkBoardSameness(b1, b2) {
   return quads;
 }
 
-
-
-function validChoice(board, col, row, num) {
-  let indicator = true;
-  // console.debug({board, col, row, num});
-  if (board[col].includes(num)) {
-    indicator = false;
+/**
+ * Checks wether or not a certain number in a certain position
+ * is sudoku or not.
+ * @param {number[][]} board - board.
+ * @param {number} x - coordinate
+ * @param {number} y - coordinate
+ * @param {number} num - proposed number
+ * @returns
+ */
+function validChoice(board, x, y, num) {
+  let valid = true;
+  // if the number is in column
+  if (board[x].includes(num)) {
+    valid = false;
   }
-  board.forEach((c) => {
-    if (c[row] === num) {
-      indicator = false;
+  // if the number is in the row
+  board.every((c) => {
+    if (c[y] === num) {
+      valid = false;
     }
+    return valid;
   });
-
+  // if the number is in the quadrants
+  // yes I generate a new representation for each check. fight me.
+  // no but seriously this is obviously not smart.
   const quadrants = getQuadrants(board);
-  const q = whichQuadrant([col, row]);
-
+  const q = whichQuadrant([x, y]);
   if (quadrants[q] && quadrants[q].includes(num)) {
-    indicator = false;
+    valid = false;
   }
 
-  return indicator;
+  return valid;
 }
 
 module.exports = {
   checkSameness,
   validChoice,
-  whichQuadrant
-}
+  whichQuadrant,
+};

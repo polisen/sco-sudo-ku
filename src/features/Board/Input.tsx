@@ -10,7 +10,7 @@ const StyledInput = styled.input<{ index: number }>`
   font-size: 16px;
   cursor: pointer;
   :hover {
-    background-color: #d9d9d9;
+    background-color: #996fd3;
   }
   :focus {
     background-color: #d9d9d9;
