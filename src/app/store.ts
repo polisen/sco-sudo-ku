@@ -1,5 +1,4 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../slices/counterSlice';
 import { firebaseReducer } from 'react-redux-firebase'
 import { createFirestoreInstance, firestoreReducer } from 'redux-firestore'
 import firebase from './firebase'
@@ -13,7 +12,6 @@ const rrfConfig = {
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     firestore: firestoreReducer,
     firebase:firebaseReducer
   },

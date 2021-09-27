@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { nanoid } from '@reduxjs/toolkit';
 import { getBorderStyle } from './utility';
 import NumberInput from './Input';
 
@@ -40,7 +41,7 @@ export const ColumnComponent = ({
 }: ColumnProps) => (
   <ColumnLayout index={x}>
     {col.map((e: number, y: number) => (
-      <Slot empty={empty[y]} index={y}>
+      <Slot key={nanoid()} empty={empty[y]} index={y}>
         {!empty[y] ? (
           e
         ) : (

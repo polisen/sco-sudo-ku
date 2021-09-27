@@ -1,5 +1,7 @@
 # Sudoku Thingy.
 
+https://zecco-sudoku.web.app/
+
 This project is a simple sudoku app with many problems.
 
 It's written in javascript and typescript, displayed in react and the back end are google cloud functions.

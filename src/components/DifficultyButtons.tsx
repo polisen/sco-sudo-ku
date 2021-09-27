@@ -36,7 +36,7 @@ const DifficultyComponent = ({
 }) => (
   <ButtonContainer>
     {['easy', 'medium', 'hard'].map((d: string) => (
-      <Button selected={difficulty === d} onClick={() => onClick(d)}>
+      <Button key={d} selected={difficulty === d} onClick={() => onClick(d)}>
         {d}
       </Button>
     ))}

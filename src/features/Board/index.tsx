@@ -1,3 +1,4 @@
+import { nanoid } from '@reduxjs/toolkit';
 import * as React from 'react';
 import styled from 'styled-components';
 import Column from './Column';
@@ -23,6 +24,7 @@ const Board = ({ board, empty, onChange }: BoardProps) => (
   <BoardLayout>
     {board.map((col, x) => (
       <Column
+        key={nanoid()}
         {...{
           empty: empty[x],
           col,
