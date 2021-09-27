@@ -1,44 +1,50 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+# Sudoku Thingy.
 
-## Available Scripts
+This project is a simple sudoku app with many problems.
 
-In the project directory, you can run:
+It's written in javascript and typescript, displayed in react and the back end are google cloud functions.
 
-### `yarn start`
+- React
+- Typescript
+- Firebase Functions
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+If you have firebase emulators - you can run those and test the app locally. You will need a firebase project config id and provide it to the firebase setup in src/app/firebase.ts. I realize that I probably should have thought about your testing ability for this but my thinking is that you might just read the code. I can wrap it up into a pure express app and push that as a docker container if you want. I used a boilerplate that I had a one-click config with for conveniece. That's also why redux is there. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+I wrote the functions in javascript because the firebase emulator setup script doesn't play nicely with create-react-app when choosing typecript in the functions and I had little time.
 
-### `yarn test`
+## Excuses
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The UI is a little bit flawed as my hacky solution to the choice validation is to only allow the right answer - I should really make that a two-part process where you can insert any valid number but if you get stuck you can check where it's wrong. But I'm 12 hours in.
 
-### `yarn build`
+I also should have commited the code more often in a more atomized way.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The sudoku solving code is a backtracking algorithm that I basically stole - but only after independently figuring out that this was probably the way to go. I have this running commentary of my planning for this written down in notion and here's a link for those interested:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+https://light-brook-fae.notion.site/Zecco-Sudoku-Solver-847e72dd5d5347ae8c122e2039af98ad
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The rest however is built by me, as you can tell by the, let's say creative optimisation strategies.
 
-### `yarn eject`
+A great example of that is the quadrant checking system - I generate a complete board every time. That's really stupid.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Some of the utility functions such as the array shuffler I totally copy and pasted - but a solid 80% of re-inventing the wheel I think is pretty good.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you have any questions please email me at fredrik@megatech.ltd
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Thank you for your interest :)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Testing
 
-## Learn More
+There are some unit tests in the functions folder
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+`cd functions`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`npm test`
+
+
+
+
+
+
+
+
+
