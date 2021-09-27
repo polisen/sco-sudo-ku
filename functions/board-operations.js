@@ -180,6 +180,7 @@ module.exports = {
   generateBoardSeed,
   inDifficultyRange,
   solve,
+  emptySlot,
   generateUnique,
   findEmpties,
   deepClone,

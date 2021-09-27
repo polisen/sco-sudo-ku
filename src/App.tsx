@@ -30,7 +30,7 @@ function App() {
 
   return (
     <MainLayout solved={solved}>
-      {!loading && !solved ? 'TIP: The number is only inserted if its right.' : 'Solved'}
+      {!loading && (!solved ? 'TIP: The number is only inserted if its right.' : 'Solved')}
       <br />
       <br />
       {loading ? (
